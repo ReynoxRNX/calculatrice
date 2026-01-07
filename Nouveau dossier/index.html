@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculatrice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Lien vers le manifest (obligatoire pour l'app) -->
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .calc {
+            background: white;
+            padding: 20px;
+            width: 280px;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        input {
+            width: 110px;
+            padding: 6px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 55px;
+            height: 40px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            border: none;
+            background: #2196f3;
+            color: white;
+        }
+
+        button:hover {
+            background: #1976d2;
+        }
+
+        #resultat {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Partie réseaux sociaux */
+        .reseaux {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .reseaux a {
+            display: inline-block;
+            margin: 6px;
+            padding: 10px 15px;
+            background: #0d47a1;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .reseaux a:hover {
+            background: #08306b;
+        }
+
+        /* Bouton installer */
+        #installBtn {
+            margin-top: 15px;
+            background: #4caf50;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="calc">
+    <h2>🧮 Calculatrice</h2>
+
+    <input type="number" id="a" placeholder="Nombre">
+    <input type="number" id="b" placeholder="Nombre">
+
+    <br>
+
+    <button onclick="calcul('+')">+</button>
+    <button onclick="calcul('-')">−</button>
+    <button onclick="calcul('*')">×</button>
+    <button onclick="calcul('/')">÷</button>
+
+    <br>
+
+    <button onclick="carre()">x²</button>
+    <button onclick="racine()">√</button>
+    <button onclick="effacer()">C</button>
+
+    <div id="resultat"></div>
+
+    <button id="installBtn">📲 Installer l'application</button>
+</div>
+
+<div class="reseaux">
+    <h3>📢 Mes réseaux sociaux</h3>
+    <p>Créateur de cette calculatrice</p>
+
+    <!-- REMPLACE LES LIENS -->
+    <a href="https://instagram.com/TON_PSEUDO" target="_blank">📸 Instagram</a>
+    <a href="https://tiktok.com/@TON_PSEUDO" target="_blank">🎵 TikTok</a>
+    <a href="https://youtube.com/@TON_PSEUDO" target="_blank">▶️ YouTube</a>
+</div>
+
+<script>
+    function calcul(op) {
+        let a = Number(document.getElementById("a").value);
+        let b = Number(document.getElementById("b").value);
+        let res;
+
+        if (op === "+") res = a + b;
+        if (op === "-") res = a - b;
+        if (op === "*") res = a * b;
+        if (op === "/") {
+            if (b === 0) {
+                document.getElementById("resultat").innerText =
+                    "Erreur : division par 0";
+                return;
+            }
+            res = a / b;
+        }
+
+        document.getElementById("resultat").innerText =
+            "Résultat : " + res;
+    }
+
+    function carre() {
+        let a = Number(document.getElementById("a").value);
+        document.getElementById("resultat").innerText =
+            "Résultat : " + (a * a);
+    }
+
+    function racine() {
+        let a = Number(document.getElementById("a").value);
+        if (a < 0) {
+            document.getElementById("resultat").innerText =
+                "Impossible (nombre négatif)";
+            return;
+        }
+        document.getElementById("resultat").innerText =
+            "Résultat : " + Math.sqrt(a);
+    }
+
+    function effacer() {
+        document.getElementById("a").value = "";
+        document.getElementById("b").value = "";
+        document.getElementById("resultat").innerText = "";
+    }
+
+    /* Gestion du bouton installer */
+    let deferredPrompt;
+    const installBtn = document.getElementById("installBtn");
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = "inline-block";
+    });
+
+    installBtn.addEventListener("click", () => {
+        deferredPrompt.prompt();
+    });
+</script>
+
+</body>
+</html>
